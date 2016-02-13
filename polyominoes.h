@@ -5,8 +5,8 @@
 
 // Squares are defined by the bottom left corner 'coordinates'
 struct Square{
-  int x;
-  int y;
+  double x;
+  double y;
 
   const static int x_size = 1;
   const static int y_size = 1;
@@ -29,6 +29,8 @@ public:
   std::vector<Square> getSquares(){ return vSquares; }
 
   void print();
+  void translate(const int x, const int y);
+  void rotate(const double d);  // Rotation cc by degree d
 };
 
 #endif

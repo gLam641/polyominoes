@@ -12,7 +12,7 @@ typedef std::unordered_map<size_t, Square> pMap;
 
 int main(){
   Square s1 = {1, 1};
-  Square s2 = {2, 2};
+  Square s2 = {2, 4};
   Square s3 = {3, 3};
 /*
   pMap mSquares;
@@ -26,6 +26,18 @@ int main(){
   vSquares.push_back(s2);
   vSquares.push_back(s3);
   Polyomino p(vSquares);
- 
+
+  p.print();
+
+  printf("Translating -1, -1\n");
+
+  p.translate(-1, -1);
+  
+  p.print();
+
+  printf("Rotating 90%%\n");
+
+  p.rotate(90);
+
   p.print();
 }
