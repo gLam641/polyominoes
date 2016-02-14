@@ -26,11 +26,13 @@ public:
     vSquares = squares;
   };
 
-  std::vector<Square> getSquares(){ return vSquares; }
+  std::vector<Square>* getSquares(){ return &vSquares; }
 
   void print();
   void translate(const int x, const int y);
   void rotate(const double d);  // Rotation cc by degree d
+ 
+  bool isSquareEmpty(const Square square);
 };
 
 #endif

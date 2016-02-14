@@ -8,7 +8,7 @@
 
 void Square::print(){
     printf("Square is (%.2f,%.2f)\n", x, y);
-};
+}
 
 void Polyomino::print(){
   printf("Polynomino:\n");
@@ -16,7 +16,7 @@ void Polyomino::print(){
     it->print();
   }
   printf("\n");
-};
+}
 
 void Polyomino::translate(const int x, const int y){
   for(std::vector<Square>::iterator it = vSquares.begin(); it != vSquares.end(); ++it){
@@ -34,4 +34,10 @@ void Polyomino::rotate(const double d){
   }
 }
 
+bool Polyomino::isSquareEmpty(const Square square){
+  for(std::vector<Square>::iterator it = vSquares.begin(); it != vSquares.end(); ++it){
+    if(it->x == square.x && it->y == square.y) return false;
+  }
+  return true;
+} 
 
