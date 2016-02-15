@@ -90,7 +90,7 @@ int main(){
   // vector of all polyominoes 
   vector<vector<Polyomino>> vPolyAll;
 
-  // base cases
+  // Base cases
   // 1 square
   vector<Square> vSquares1;
   vSquares1.push_back(s1);
@@ -108,19 +108,20 @@ int main(){
   vPoly2.push_back(p2);
   vPolyAll.push_back(vPoly2);
 
-  int nSquares;
-  cout << "Please enter the number of squares" << endl;
-  cin >> nSquares;  
+  while(1){
+    int nSquares;
+    cout << "Please enter the number of squares" << endl;
+    cin >> nSquares;
 
-  cout << "Computing ..." << endl;
+    cout << "Computing ..." << endl;
 
-  ComputePolyominoes(nSquares, vPolyAll);
+    ComputePolyominoes(nSquares, vPolyAll);
 
-  cout << "There are " 
-       << vPolyAll[nSquares - 1].size()
-       << " distinct polyominoes for " 
-       << nSquares << " squares" << endl;
- 
+    cout << "There are "
+	 << vPolyAll[nSquares - 1].size()
+	 << " distinct polyominoes for "
+	 << nSquares << " squares" << endl;
+  }
 }
 
 
