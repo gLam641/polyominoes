@@ -11,30 +11,62 @@ typedef std::unordered_map<size_t, Square> pMap;
 
 #endif
 
+// Check if adding a square at the specified square + transform makes a 
+// new polyomino. If yes, store it in table
+void FindNewPolyomino(Square& s, const int transX, const int transY,
+                      const Polyomino& polyNLess1,
+                      vector<Polyomino>& vPolyN){
+  s.translate(transX, transY);
+  if(polyNLess1.isSquareEmpty(s)){
+    // Insert in the appropriate place. 
+    // Translate if new square is on the boundary
+    Polyomino genP = polyNLess1.generatePolyomino(s);
+    genP.translate(s.x < 0 ? -s.x : 0, 
+                   s.y < 0 ? -s.y : 0);
+    
+    bool isNew = true; 
+
+    // Check if polyomino is new. Add if new
+    for(vector<Polyomino>::iterator it = vPolyN.begin(); it != vPolyN.end(); ++it){
+      if(it->isEqual(genP)){
+        isNew = false;
+	break;
+      }
+    }
+
+    if(isNew){ 
+      //genP.drawASCII();
+      vPolyN.push_back(genP);
+    }
+  }
+  s.translate(-transX, -transY);
+}
+
 // Compute all Polyomino possible by adding a square to all
 // possible 'empty' locations in each of the set of n-1 polyominoes
-void computePolyominoes(const unsigned int nSquares, vector<vector<Polyomino>>& vPolyAll){
+void ComputePolyominoes(const unsigned int nSquares, vector<vector<Polyomino>>& vPolyAll){
   // check base case and already computed cases
   if(nSquares == 1 || nSquares == 2) return;
   if(nSquares <= vPolyAll.size()) return;
 
   // compute the polyominoes for the 1 smaller set if not yet computed
-  if(nSquares - 1 > vPolyAll.size()) computePolyominoes(nSquares - 1, vPolyAll);
-  
+  if(nSquares - 1 > vPolyAll.size()) ComputePolyominoes(nSquares - 1, vPolyAll);
 
-  vector<Square> vSquares;
-  vector<Polyomino>* vPolyNLess1 = &vPolyAll[nSquares - 1];
-  for(unsigned int i = 0; i < vPolyNLess1->size(); ++i){
-    vector<Square>* vSquaresNLess1 = (*vPolyNLess1)[i].getSquares();
-    for(unsigned int j = 0; j < vSquaresNLess1->size(); ++i){
-      Square s = (*vSquaresNLess1)[j];
-      //--s.x;
-      return;
+  vector<Polyomino> vPolyN;
+  for(unsigned int i = 0; i < vPolyAll[nSquares - 2].size(); ++i){
+    Polyomino* polyNLess1 = &vPolyAll[nSquares - 2][i];
+    for(unsigned int j = 0; j < polyNLess1->getSquares().size(); ++j){
+      Square s = polyNLess1->getSquares()[j];
+      FindNewPolyomino(s, 1, 0, *polyNLess1, vPolyN);  // Right 
+      FindNewPolyomino(s, 0, 1, *polyNLess1, vPolyN);  // Up
+      FindNewPolyomino(s, -1, 0, *polyNLess1, vPolyN);  // Left 
+      FindNewPolyomino(s, 0, -1, *polyNLess1, vPolyN);  // Down
     } 
   }
+  vPolyAll.push_back(vPolyN);
 };
 
-void testTranslateRotate(Polyomino p){
+void TestTranslateRotate(Polyomino p){
   p.print();
   printf("Translating -1, -1\n");
   p.translate(-1, -1);
@@ -45,8 +77,8 @@ void testTranslateRotate(Polyomino p){
 };
 
 int main(){
-  Square s1 = {1, 1};
-  Square s2 = {1, 2};
+  Square s1 = {0, 0};
+  Square s2 = {0, 1};
 /*
   pMap mSquares;
 
@@ -75,17 +107,18 @@ int main(){
   vector<Polyomino> vPoly2;
   vPoly2.push_back(p2);
   vPolyAll.push_back(vPoly2);
- 
+
   int nSquares;
   cout << "Please enter the number of squares" << endl;
   cin >> nSquares;  
 
-  computePolyominoes(nSquares, vPolyAll);
+  cout << "Computing ..." << endl;
 
-  cout << "Computing ..." << endl
-       << "There are " 
+  ComputePolyominoes(nSquares, vPolyAll);
+
+  cout << "There are " 
        << vPolyAll[nSquares - 1].size()
-       << " polyominoes for " 
+       << " distinct polyominoes for " 
        << nSquares << " squares" << endl;
  
 }

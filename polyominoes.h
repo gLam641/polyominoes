@@ -5,13 +5,15 @@
 
 // Squares are defined by the bottom left corner 'coordinates'
 struct Square{
-  double x;
-  double y;
+  int x;
+  int y;
 
   const static int x_size = 1;
   const static int y_size = 1;
     
   void print();
+  
+  void translate(const int x, const int y);
 };
 
 // A std::vector of connected squares
@@ -26,13 +28,25 @@ public:
     vSquares = squares;
   };
 
-  std::vector<Square>* getSquares(){ return &vSquares; }
+  // Checks all 4 rotational equivalent
+  bool isEqual(Polyomino& p);
+
+  std::vector<Square> getSquares(){ return vSquares; }
 
   void print();
+  void drawASCII();
   void translate(const int x, const int y);
-  void rotate(const double d);  // Rotation cc by degree d
+  void rotate(const float d);  // Rotation cc by degree d
  
-  bool isSquareEmpty(const Square square);
+  // Check if square is used in this polyomino after transformation
+  bool isSquareEmpty (const Square& square) const;
+
+  // Translate Polyomino such that its minimum x value is 0 and minimum y
+  // value is 0
+  void normalize();
+
+  // Generate new Polyomino by inserting a new square
+  Polyomino generatePolyomino(Square sNew) const;
 };
 
 #endif
