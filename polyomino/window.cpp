@@ -13,10 +13,12 @@ Window::Window(QWidget *parent) : QWidget(parent)
     //drawPolyCanvas = new DrawPolyCanvas(parent);
 
     createGroupBoxInput();
+    createGroupBoxResults();
     createGroupBoxAction();
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(hGroupBoxInputs);
+    mainLayout->addWidget(hGroupBoxResults);
     mainLayout->addWidget(hGroupBoxActions);
 
     setLayout(mainLayout);
@@ -30,13 +32,24 @@ void Window::createGroupBoxInput(){
     layout->addWidget(new QLabel(tr("Enter the number of Squares: "), this));
 
     cBoxNSquares = new QComboBox(this);
-    //connect(btnQuit, SIGNAL(released()), QApplication::instance(), SLOT(quit()));
     for(int i = 1; i < 9; ++i){
         cBoxNSquares->addItem(QString::number(i));
     }
     layout->addWidget(cBoxNSquares, 0);
 
     hGroupBoxInputs->setLayout(layout);
+}
+
+void Window::createGroupBoxResults(){
+    hGroupBoxResults = new QGroupBox(tr("Results"));
+    QHBoxLayout *layout = new QHBoxLayout;
+
+    layout->addWidget(new QLabel(tr("Number of Polyominoes: "), this));
+    nPolyResult = new QLabel();
+    nPolyResult->setAlignment(Qt::AlignRight);
+    layout->addWidget(nPolyResult);
+
+    hGroupBoxResults->setLayout(layout);
 }
 
 void Window::createGroupBoxAction(){
@@ -57,5 +70,5 @@ void Window::createGroupBoxAction(){
 void Window::slotComputeButton(){
     unsigned int nSquares = cBoxNSquares->currentIndex() + 1;
     drawPolyCanvas.updatePolynomino(nSquares);
-    btnComputePoly->setText(QString::number(drawPolyCanvas.getVPolyN(nSquares).size()));
+    nPolyResult->setText(QString::number(drawPolyCanvas.getVPolyN(nSquares).size()));
 }

@@ -6,6 +6,7 @@
 class QComboBox;
 class QPushButton;
 class QGroupBox;
+class QLabel;
 
 #include "drawpolycanvas.h"
 
@@ -17,14 +18,17 @@ public:
 
 private:
     void createGroupBoxInput();
+    void createGroupBoxResults();
     void createGroupBoxAction();
 
     QGroupBox *hGroupBoxInputs;
     QGroupBox *hGroupBoxActions;
+    QGroupBox *hGroupBoxResults;
 
     QComboBox *cBoxNSquares;  // combo box to choose number of squares
     QPushButton *btnComputePoly;
     QPushButton *btnQuit;
+    QLabel *nPolyResult;
 
     DrawPolyCanvas drawPolyCanvas;
 

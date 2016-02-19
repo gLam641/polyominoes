@@ -23,7 +23,7 @@ protected:
 
 private:
     std::vector<std::vector<Polyomino>> vPolyAll;
-
+    unsigned int lastCalledNSquares;
 };
 
 #endif // DRAWPOLYCANVAS_H

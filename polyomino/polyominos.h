@@ -33,7 +33,7 @@ public:
   // Checks all 4 rotational equivalent
   bool isEqual(Polyomino& p);
 
-  std::vector<Square> getSquares(){ return vSquares; }
+  const std::vector<Square>& getSquares(){ return vSquares; }
 
   void print();
   void drawASCII();

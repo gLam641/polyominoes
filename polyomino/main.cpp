@@ -8,6 +8,7 @@ int main(int argc, char** argv){
 
     Window window;
 
+
     window.show();
     return app.exec();
 }

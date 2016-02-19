@@ -95,36 +95,45 @@ DrawPolyCanvas::DrawPolyCanvas(QWidget *parent) : QWidget(parent){
 }
 
 QSize DrawPolyCanvas::minimumSizeHint() const {
-  return QSize(900, 900);
+  return QSize(450, 450);
 }
 
 QSize DrawPolyCanvas::sizeHint() const {
-  return QSize(900, 900);
+  return QSize(450, 450);
 }
 
 void DrawPolyCanvas::updatePolynomino(const unsigned int nSquares){
   // Report findings to window to update value
   ComputePolyominoes(nSquares, vPolyAll);
-  update();
+  lastCalledNSquares = nSquares;
+  if(nSquares <= 4){
+    this->show();
+    update();
+  }
 }
 
-void DrawPolyCanvas::paintEvent(QPaintEvent * /* event */){
+void DrawPolyCanvas::paintEvent(QPaintEvent * /* event */){    
   QPainter painter(this);
 
-  /*
   // Size of each square in polyomino
-  int squareSize =  width() / 9 / vPoly[0].getList().size();
+  int squareSize =  width() / 6 / lastCalledNSquares;
 
-  // Divide canvas into a grid of 9. Draw polyomino in each box of the grid.
-  for(int x = 0; x < width(); x += width() / 9){
-    for(int y = 0; y < height(); y += height() / 9){
-      paint.save();
+  std::vector<Polyomino>::iterator itp = vPolyAll[lastCalledNSquares - 1].begin();
+
+  // Divide canvas into a grid of 9. Draw polyomino in each box of the grid. (Until no more)
+  for(int y = 0; y < height(); y += height() / 3){
+    for(int x = 0; x < width(); x += width() / 3){
+      painter.save();
       painter.translate(x, y);
-      for(vector<Polyomino>::iterator it = vPoly.begin(); it != vPoly.end(); ++it){
-        painter.drawRect(it->x * squareSize, it->y * squareSize - height() / 9, squareSize, squareSize);
+
+      for(std::vector<Square>::const_iterator its = itp->getSquares().begin(); its != itp->getSquares().end(); ++its){
+        painter.drawRect(its->x * squareSize, its->y * squareSize + height() / 9, squareSize, squareSize);
       }
+
+      ++itp;
+      if(itp == vPolyAll[lastCalledNSquares - 1].end()) return;
+
       painter.restore();
     }
   }
-  */
 }
