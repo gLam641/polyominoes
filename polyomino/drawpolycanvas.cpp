@@ -109,6 +109,8 @@ void DrawPolyCanvas::updatePolynomino(const unsigned int nSquares){
   if(nSquares <= 4){
     this->show();
     update();
+  } else{
+    this->hide();
   }
 }
 
